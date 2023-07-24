@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <title>Codespaces & FastAPI</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/ui/bootstrap.min.css">
+    <link rel="stylesheet" href="bootstrap.min.css">
     <style>
   html, body, .container {
     height: 100%;
@@ -38,20 +38,52 @@ img{
               <p>Use the buttons below to make use of the interactive (OpenAPI) documentation for trying out the API dynamically.
                 or browse the project source.
               </p>
-              <!-- create an interactive form with text inout and a button to submit the text to the API -->
-              <form action="/api/v1/predict" method="post">
-                <label for="text">Enter text to classify:</label><br>
-                <input type="text" id="text" name="text" value="This is a test"><br>
-                <input type="submit" value="Submit">
 
+              <!-- create an interactive form with text input and button, and add event listener to button to send POST request to /generate endpoint and display response in a div with id "result" -->
+              <form id="form">
+                <label for="text">Enter a text:</label><br>
+                <!-- create an input with a dropdown to select from 5, 10, 15, 20 -->
+                <!-- dropdown input -->
+                <select name="length" id="length">
+                  <option value="5">5</option>
+                  <option value="10">10</option>
+                  <option value="15">15</option>
+                  <option value="20">20</option>
+                </select>
+                <button type="button" class="btn btn-primary" id="submit">Submit</button>
               </form>
-
-              
-              <button onclick="window.location.href='https://github.com/microsoft/codespaces-project-template-py/'" type="button" class="btn btn-info">Project source</button>
+              <div id="result"></div>
+            
+              <!-- add event listener to button to send POST request to /generate endpoint and display response in a div with id "result" -->
+              <!-- use const -->
+              <script>
+                const form = document.getElementById('form');
+                const submit = document.getElementById('submit');
+                const result = document.getElementById('result');
+                submit.addEventListener('click', function(e) {
+                  e.preventDefault();
+                  const formData = new FormData(form);
+                  fetch('/generate', {
+                    method: 'POST',
+                    body: JSON.stringify({length: formData.get('length')}),
+                    headers: {
+                      'Content-Type': 'application/json'
+                    }
+                  })
+                  .then(response => response.json())
+                  .then(data => {
+                    result.innerHTML = `<p>${data.token}</p>`;
+                  })
+                })
+            </script>
             </div>
           </div>
         </div>
       </div>
     </div>
+     <!-- add space at the bottom -->
+      <br>
+      <button onclick="window.location.href='https://github.com/microsoft/codespaces-project-template-py/'" type="button" class="btn btn-info">Project source</button>
+      <br>
   </body>
 </html>
