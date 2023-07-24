@@ -38,7 +38,15 @@ img{
               <p>Use the buttons below to make use of the interactive (OpenAPI) documentation for trying out the API dynamically.
                 or browse the project source.
               </p>
-              <button onclick="window.location.href='/docs'" type="button" class="btn btn-info">Try it out</button>
+              <!-- create an interactive form with text inout and a button to submit the text to the API -->
+              <form action="/api/v1/predict" method="post">
+                <label for="text">Enter text to classify:</label><br>
+                <input type="text" id="text" name="text" value="This is a test"><br>
+                <input type="submit" value="Submit">
+
+              </form>
+
+              
               <button onclick="window.location.href='https://github.com/microsoft/codespaces-project-template-py/'" type="button" class="btn btn-info">Project source</button>
             </div>
           </div>
